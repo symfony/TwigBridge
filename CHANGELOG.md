@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+7.3
+---
+
+ * Add `is_granted_for_user()` Twig function
+
 7.2
 ---
 
