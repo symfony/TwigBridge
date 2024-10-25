@@ -21,6 +21,7 @@ use Twig\Node\Expression\ArrayExpression;
 use Twig\Node\Expression\ConditionalExpression;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\Variable\ContextVariable;
 use Twig\Node\Node;
 use Twig\Node\Nodes;
 use Twig\TwigFunction;
@@ -31,7 +32,7 @@ class SearchAndRenderBlockNodeTest extends TestCase
     {
         if (class_exists(Nodes::class)) {
             $arguments = new Nodes([
-                new NameExpression('form', 0),
+                new ContextVariable('form', 0),
             ]);
         } else {
             $arguments = new Node([
@@ -56,7 +57,7 @@ class SearchAndRenderBlockNodeTest extends TestCase
     {
         if (class_exists(Nodes::class)) {
             $arguments = new Nodes([
-                new NameExpression('form', 0),
+                new ContextVariable('form', 0),
                 new ArrayExpression([
                     new ConstantExpression('foo', 0),
                     new ConstantExpression('bar', 0),
@@ -89,7 +90,7 @@ class SearchAndRenderBlockNodeTest extends TestCase
     {
         if (class_exists(Nodes::class)) {
             $arguments = new Nodes([
-                new NameExpression('form', 0),
+                new ContextVariable('form', 0),
                 new ConstantExpression('my label', 0),
             ]);
         } else {
@@ -116,7 +117,7 @@ class SearchAndRenderBlockNodeTest extends TestCase
     {
         if (class_exists(Nodes::class)) {
             $arguments = new Nodes([
-                new NameExpression('form', 0),
+                new ContextVariable('form', 0),
                 new ConstantExpression(null, 0),
             ]);
         } else {
@@ -145,7 +146,7 @@ class SearchAndRenderBlockNodeTest extends TestCase
     {
         if (class_exists(Nodes::class)) {
             $arguments = new Nodes([
-                new NameExpression('form', 0),
+                new ContextVariable('form', 0),
                 new ConstantExpression('', 0),
             ]);
         } else {
@@ -174,7 +175,7 @@ class SearchAndRenderBlockNodeTest extends TestCase
     {
         if (class_exists(Nodes::class)) {
             $arguments = new Nodes([
-                new NameExpression('form', 0),
+                new ContextVariable('form', 0),
             ]);
         } else {
             $arguments = new Node([
@@ -199,7 +200,7 @@ class SearchAndRenderBlockNodeTest extends TestCase
     {
         if (class_exists(Nodes::class)) {
             $arguments = new Nodes([
-                new NameExpression('form', 0),
+                new ContextVariable('form', 0),
                 new ConstantExpression(null, 0),
                 new ArrayExpression([
                     new ConstantExpression('foo', 0),
@@ -237,7 +238,7 @@ class SearchAndRenderBlockNodeTest extends TestCase
     {
         if (class_exists(Nodes::class)) {
             $arguments = new Nodes([
-                new NameExpression('form', 0),
+                new ContextVariable('form', 0),
                 new ConstantExpression('value in argument', 0),
                 new ArrayExpression([
                     new ConstantExpression('foo', 0),
@@ -276,7 +277,7 @@ class SearchAndRenderBlockNodeTest extends TestCase
     {
         if (class_exists(Nodes::class)) {
             $arguments = new Nodes([
-                new NameExpression('form', 0),
+                new ContextVariable('form', 0),
                 new ConditionalExpression(
                     // if
                     new ConstantExpression(true, 0),
@@ -323,7 +324,7 @@ class SearchAndRenderBlockNodeTest extends TestCase
     {
         if (class_exists(Nodes::class)) {
             $arguments = new Nodes([
-                new NameExpression('form', 0),
+                new ContextVariable('form', 0),
                 new ConditionalExpression(
                     // if
                     new ConstantExpression(true, 0),
