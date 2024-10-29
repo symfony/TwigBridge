@@ -55,9 +55,8 @@ final class TranslationDefaultDomainNodeVisitor implements NodeVisitorInterface
                 return $node;
             }
 
-            $var = $this->getVarName();
-            $name = class_exists(AssignContextVariable::class) ? new AssignContextVariable($var, $node->getTemplateLine()) : new AssignNameExpression($var, $node->getTemplateLine());
-            $this->scope->set('domain', class_exists(ContextVariable::class) ? new ContextVariable($var, $node->getTemplateLine()) : new NameExpression($var, $node->getTemplateLine()));
+            $name = class_exists(AssignContextVariable::class) ? new AssignContextVariable(self::INTERNAL_VAR_NAME, $node->getTemplateLine()) : new AssignNameExpression(self::INTERNAL_VAR_NAME, $node->getTemplateLine());
+            $this->scope->set('domain', class_exists(ContextVariable::class) ? new ContextVariable(self::INTERNAL_VAR_NAME, $node->getTemplateLine()) : new NameExpression(self::INTERNAL_VAR_NAME, $node->getTemplateLine()));
 
             if (class_exists(Nodes::class)) {
                 return new SetNode(false, new Nodes([$name]), new Nodes([$node->getNode('expr')]), $node->getTemplateLine());
