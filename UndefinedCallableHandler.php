@@ -23,6 +23,7 @@ use Twig\TwigFunction;
 class UndefinedCallableHandler
 {
     private const FILTER_COMPONENTS = [
+        'emojify' => 'emoji',
         'humanize' => 'form',
         'form_encode_currency' => 'form',
         'serialize' => 'serializer',
@@ -37,7 +38,6 @@ class UndefinedCallableHandler
         'asset_version' => 'asset',
         'importmap' => 'asset-mapper',
         'dump' => 'debug-bundle',
-        'emojify' => 'emoji',
         'encore_entry_link_tags' => 'webpack-encore-bundle',
         'encore_entry_script_tags' => 'webpack-encore-bundle',
         'expression' => 'expression-language',
