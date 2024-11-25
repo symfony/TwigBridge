@@ -15,6 +15,7 @@ use Symfony\Bridge\Twig\Node\TransDefaultDomainNode;
 use Symfony\Bridge\Twig\Node\TransNode;
 use Twig\Environment;
 use Twig\Node\BlockNode;
+use Twig\Node\EmptyNode;
 use Twig\Node\Expression\ArrayExpression;
 use Twig\Node\Expression\AssignNameExpression;
 use Twig\Node\Expression\ConstantExpression;
@@ -70,6 +71,12 @@ final class TranslationDefaultDomainNodeVisitor implements NodeVisitorInterface
 
         if ($node instanceof FilterExpression && 'trans' === ($node->hasAttribute('twig_callable') ? $node->getAttribute('twig_callable')->getName() : $node->getNode('filter')->getAttribute('value'))) {
             $arguments = $node->getNode('arguments');
+
+            if ($arguments instanceof EmptyNode) {
+                $arguments = new Nodes();
+                $node->setNode('arguments', $arguments);
+            }
+
             if ($this->isNamedArguments($arguments)) {
                 if (!$arguments->hasNode('domain') && !$arguments->hasNode(1)) {
                     $arguments->setNode('domain', $this->scope->get('domain'));
