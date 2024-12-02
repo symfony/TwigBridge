@@ -22,6 +22,7 @@ use Twig\Node\Expression\ArrayExpression;
 use Twig\Node\Expression\ConditionalExpression;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\NameExpression;
+use Twig\Node\Expression\Ternary\ConditionalTernary;
 use Twig\Node\Expression\Variable\ContextVariable;
 use Twig\Node\Node;
 use Twig\Node\Nodes;
@@ -308,32 +309,32 @@ class SearchAndRenderBlockNodeTest extends TestCase
 
     public function testCompileLabelWithLabelThatEvaluatesToNull()
     {
-        if (class_exists(Nodes::class)) {
-            $arguments = new Nodes([
-                new ContextVariable('form', 0),
-                new ConditionalExpression(
-                    // if
-                    new ConstantExpression(true, 0),
-                    // then
-                    new ConstantExpression(null, 0),
-                    // else
-                    new ConstantExpression(null, 0),
-                    0
-                ),
-            ]);
+        if (class_exists(ConditionalTernary::class)) {
+            $conditional = new ConditionalTernary(
+                // if
+                new ConstantExpression(true, 0),
+                // then
+                new ConstantExpression(null, 0),
+                // else
+                new ConstantExpression(null, 0),
+                0
+            );
         } else {
-            $arguments = new Node([
-                new NameExpression('form', 0),
-                new ConditionalExpression(
-                    // if
-                    new ConstantExpression(true, 0),
-                    // then
-                    new ConstantExpression(null, 0),
-                    // else
-                    new ConstantExpression(null, 0),
-                    0
-                ),
-            ]);
+            $conditional = new ConditionalExpression(
+                // if
+                new ConstantExpression(true, 0),
+                // then
+                new ConstantExpression(null, 0),
+                // else
+                new ConstantExpression(null, 0),
+                0
+            );
+        }
+
+        if (class_exists(Nodes::class)) {
+            $arguments = new Nodes([new ContextVariable('form', 0), $conditional]);
+        } else {
+            $arguments = new Node([new NameExpression('form', 0), $conditional]);
         }
 
         if (class_exists(FirstClassTwigCallableReady::class)) {
@@ -359,18 +360,32 @@ class SearchAndRenderBlockNodeTest extends TestCase
 
     public function testCompileLabelWithLabelThatEvaluatesToNullAndAttributes()
     {
+        if (class_exists(ConditionalTernary::class)) {
+            $conditional = new ConditionalTernary(
+                // if
+                new ConstantExpression(true, 0),
+                // then
+                new ConstantExpression(null, 0),
+                // else
+                new ConstantExpression(null, 0),
+                0
+            );
+        } else {
+            $conditional = new ConditionalExpression(
+                // if
+                new ConstantExpression(true, 0),
+                // then
+                new ConstantExpression(null, 0),
+                // else
+                new ConstantExpression(null, 0),
+                0
+            );
+        }
+
         if (class_exists(Nodes::class)) {
             $arguments = new Nodes([
                 new ContextVariable('form', 0),
-                new ConditionalExpression(
-                    // if
-                    new ConstantExpression(true, 0),
-                    // then
-                    new ConstantExpression(null, 0),
-                    // else
-                    new ConstantExpression(null, 0),
-                    0
-                ),
+                $conditional,
                 new ArrayExpression([
                     new ConstantExpression('foo', 0),
                     new ConstantExpression('bar', 0),
@@ -381,12 +396,7 @@ class SearchAndRenderBlockNodeTest extends TestCase
         } else {
             $arguments = new Node([
                 new NameExpression('form', 0),
-                new ConditionalExpression(
-                    new ConstantExpression(true, 0),
-                    new ConstantExpression(null, 0),
-                    new ConstantExpression(null, 0),
-                    0
-                ),
+                $conditional,
                 new ArrayExpression([
                     new ConstantExpression('foo', 0),
                     new ConstantExpression('bar', 0),
