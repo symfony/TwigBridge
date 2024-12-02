@@ -21,7 +21,8 @@ use Twig\Node\Expression\AssignNameExpression;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
 use Twig\Node\Expression\NameExpression;
-use Twig\Node\Expression\Variable\LocalVariable;
+use Twig\Node\Expression\Variable\AssignContextVariable;
+use Twig\Node\Expression\Variable\ContextVariable;
 use Twig\Node\ModuleNode;
 use Twig\Node\Node;
 use Twig\Node\Nodes;
@@ -34,7 +35,6 @@ use Twig\NodeVisitor\NodeVisitorInterface;
 final class TranslationDefaultDomainNodeVisitor implements NodeVisitorInterface
 {
     private Scope $scope;
-    private int $nestingLevel = 0;
 
     public function __construct()
     {
@@ -48,22 +48,25 @@ final class TranslationDefaultDomainNodeVisitor implements NodeVisitorInterface
         }
 
         if ($node instanceof TransDefaultDomainNode) {
-            ++$this->nestingLevel;
-
             if ($node->getNode('expr') instanceof ConstantExpression) {
                 $this->scope->set('domain', $node->getNode('expr'));
 
                 return $node;
             }
 
+            if (null === $templateName = $node->getTemplateName()) {
+                throw new \LogicException('Cannot traverse a node without a template name.');
+            }
+
+            $var = '__internal_trans_default_domain'.hash('xxh128', $templateName);
+
             if (class_exists(Nodes::class)) {
-                $name = new LocalVariable(null, $node->getTemplateLine());
-                $this->scope->set('domain', $name);
+                $name = new AssignContextVariable($var, $node->getTemplateLine());
+                $this->scope->set('domain', new ContextVariable($var, $node->getTemplateLine()));
 
                 return new SetNode(false, new Nodes([$name]), new Nodes([$node->getNode('expr')]), $node->getTemplateLine());
             }
 
-            $var = '__internal_trans_default_domain_'.$this->nestingLevel;
             $name = new AssignNameExpression($var, $node->getTemplateLine());
             $this->scope->set('domain', new NameExpression($var, $node->getTemplateLine()));
 
@@ -105,8 +108,6 @@ final class TranslationDefaultDomainNodeVisitor implements NodeVisitorInterface
     public function leaveNode(Node $node, Environment $env): ?Node
     {
         if ($node instanceof TransDefaultDomainNode) {
-            --$this->nestingLevel;
-
             return null;
         }
 
