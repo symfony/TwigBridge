@@ -61,6 +61,7 @@ class UndefinedCallableHandler
         'logout_url' => 'security-http',
         'logout_path' => 'security-http',
         'is_granted' => 'security-core',
+        'is_granted_for_user' => 'security-core',
         'impersonation_path' => 'security-http',
         'impersonation_url' => 'security-http',
         'impersonation_exit_path' => 'security-http',
