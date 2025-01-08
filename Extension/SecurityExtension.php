@@ -41,6 +41,10 @@ final class SecurityExtension extends AbstractExtension
         }
 
         if (null !== $field) {
+            if (!class_exists(FieldVote::class)) {
+                throw new \LogicException('Passing a $field to the "is_granted()" function requires symfony/acl. Try running "composer require symfony/acl-bundle" if you need field-level access control.');
+            }
+
             $object = new FieldVote($object, $field);
         }
 
@@ -57,7 +61,11 @@ final class SecurityExtension extends AbstractExtension
             throw new \LogicException(\sprintf('An instance of "%s" must be provided to use "%s()".', UserAuthorizationCheckerInterface::class, __METHOD__));
         }
 
-        if ($field) {
+        if (null !== $field) {
+            if (!class_exists(FieldVote::class)) {
+                throw new \LogicException('Passing a $field to the "is_granted_for_user()" function requires symfony/acl. Try running "composer require symfony/acl-bundle" if you need field-level access control.');
+            }
+
             $subject = new FieldVote($subject, $field);
         }
 
