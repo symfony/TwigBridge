@@ -36,9 +36,7 @@ final class StopwatchTokenParser extends AbstractTokenParser
         $stream = $this->parser->getStream();
 
         // {% stopwatch 'bar' %}
-        $name = method_exists($this->parser, 'parseExpression') ?
-            $this->parser->parseExpression() :
-            $this->parser->getExpressionParser()->parseExpression();
+        $name = $this->parser->parseExpression();
 
         $stream->expect(Token::BLOCK_END_TYPE);
 
